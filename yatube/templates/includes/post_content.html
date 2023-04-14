@@ -1,0 +1,26 @@
+{% load thumbnail %}
+<article>
+  <ul> 
+    <li>
+      Автор: {{ post.author.get_full_name }}
+    </li>
+    {% if not profile_page %}
+      <li>
+        <a href="{% url 'posts:profile' post.author.username %}">Все посты автора</a>
+      </li>
+    {% endif %}
+    <li>
+      Дата публикации: {{ post.pub_date|date:"d E Y" }}
+    </li>
+    <li>
+      <a href="{% url 'posts:post_detail' post.pk %}">Подробная информация</a>
+    </li>
+  </ul>
+  {% thumbnail post.image "900x450" padding="true" upscale=True as im %}
+    <img src="{{ im.url }}" width="900" height="450">
+  {% endthumbnail %}
+  <p>{{ post.text }}</p>
+  {% if not group_page and post.group %}
+    <p><a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a></p>
+  {% endif %}
+</article>
